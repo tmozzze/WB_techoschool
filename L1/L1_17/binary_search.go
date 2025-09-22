@@ -1,17 +1,25 @@
 package l117
 
 func BinarySearch(arr []int, elem int) int {
-	mid := len(arr) / 2
-
-	if elem == arr[mid] {
-		return mid
+	if len(arr) == 0 {
+		return -1
 	}
-	if elem < arr[mid] {
-		left := arr[:mid]
-		return BinarySearch(left, elem)
-	} else if elem > arr[mid] {
-		right := arr[mid:]
-		return BinarySearch(right, elem)
+
+	left := 0
+	right := len(arr) - 1
+
+	for left <= right {
+		mid := (left + right) / 2
+
+		if arr[mid] == elem {
+			return mid
+		}
+
+		if elem < arr[mid] {
+			right = mid - 1
+		} else {
+			left = mid + 1
+		}
 	}
 	return -1
 }

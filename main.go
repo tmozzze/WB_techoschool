@@ -12,5 +12,5 @@ func main() {
 
 	srtdArr := l116.QuickSort(arr)
 	fmt.Println(srtdArr)
-	fmt.Println(l117.BinarySearch(srtdArr, 10000))
+	fmt.Println(l117.BinarySearch(srtdArr, 0))
 }
