@@ -1,16 +1,6 @@
-package main
+package l116
 
-import "fmt"
-
-func main() {
-	arr := []int{4, 5, 3, 1, 8, 2, 9, 6, 7, 1120, 12}
-	sortedArr := quickSort(arr)
-
-	fmt.Println("arr:", arr)
-	fmt.Println("srtd arr:", sortedArr)
-}
-
-func quickSort(data []int) []int {
+func QuickSort(data []int) []int {
 	arr := make([]int, len(data))
 	copy(arr, data)
 
@@ -42,7 +32,7 @@ func quickSort(data []int) []int {
 
 	arr[pivotId], arr[right] = arr[right], arr[pivotId]
 
-	quickSort(arr[:right])
-	quickSort(arr[right+1:])
+	QuickSort(arr[:right])
+	QuickSort(arr[right+1:])
 	return arr
 }
