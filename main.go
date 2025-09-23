@@ -8,9 +8,8 @@ import (
 )
 
 func main() {
-	arr := []int{2, 4, 3, 10, 1, 17, 9, 1000}
-
-	srtdArr := l116.QuickSort(arr)
-	fmt.Println(srtdArr)
-	fmt.Println(l117.BinarySearch(srtdArr, 0))
+	counter := l118.NewConcurrentCounter()
+	for i := 0; i <= 100; i++ {
+		go l118.
+	}
 }

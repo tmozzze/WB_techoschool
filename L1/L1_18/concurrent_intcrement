@@ -1,0 +1,18 @@
+package l118
+
+import "sync"
+
+type ConcurrentCounter struct {
+	mu      *sync.Mutex
+	counter uint
+}
+
+func NewConcurrentCounter() {
+	return ConcurrentCounter{mu: &sync.Mutex}
+}
+
+func (c *ConcurrentCounter) IncrementCounter() {
+	c.mu.Lock()
+	c.counter++
+	c.mu.Unlock()
+}
