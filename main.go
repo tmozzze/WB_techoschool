@@ -1,15 +1,25 @@
 package main
 
 import (
-	"fmt"
+	"log"
+	"sync"
 
-	l116 "github.com/tmozzze/WB_techoschool/L1/L1_16"
-	l117 "github.com/tmozzze/WB_techoschool/L1/L1_17"
+	l118 "github.com/tmozzze/WB_techoschool/L1/L1_18"
 )
 
 func main() {
 	counter := l118.NewConcurrentCounter()
-	for i := 0; i <= 100; i++ {
-		go l118.
+	var wg sync.WaitGroup
+
+	wg.Add(100)
+	for i := 0; i < 100; i++ {
+		go func() {
+			counter.IncrementCounter()
+			log.Printf("gorutine %d finished\n", i)
+			wg.Done()
+		}()
 	}
+	wg.Wait()
+	counter.PrintCounter()
+
 }
