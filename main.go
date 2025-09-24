@@ -3,11 +3,22 @@ package main
 import (
 	"fmt"
 
-	l119 "github.com/tmozzze/WB_techoschool/L1/L1_19"
+	l120 "github.com/tmozzze/WB_techoschool/L1/L1_20"
 )
 
 func main() {
-	str := "zs"
-	fmt.Println(l119.ReverseString(str))
+	examples := []string{
+		"snow dog sun",
+		"hello world",
+		"a b c",
+		"single",
+		"",
+		"   multiple   spaces   ",
+		" 3",
+	}
 
+	for _, example := range examples {
+		result := l120.ShaffleWords(example)
+		fmt.Printf("Вход: «%s» -> Выход: «%s»\n", example, result)
+	}
 }
