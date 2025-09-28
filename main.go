@@ -1,19 +1,13 @@
 package main
 
 import (
-	l121 "github.com/tmozzze/WB_techoschool/L1/L1_21"
+	"fmt"
+
+	l122 "github.com/tmozzze/WB_techoschool/L1/L1_22"
 )
 
 func main() {
-	var c1, c2 l121.Creature
+	fmt.Println("Starting...")
 
-	c1 = &l121.Human{}
-	c1.Say()
-
-	dog := &l121.Dog{}
-	dog.Bark()
-
-	c2 = &l121.DogAdapter{DogExample: dog}
-	c2.Say()
-
+	l122.Calculate()
 }
