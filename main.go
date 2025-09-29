@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
+	"time"
 
-	l124 "github.com/tmozzze/WB_techoschool/L1/L1_24"
+	l125 "github.com/tmozzze/WB_techoschool/L1/L1_25"
 )
 
 func main() {
 
-	p1 := l124.NewPoint(-1, 2)
-	p2 := l124.NewPoint(2, -2)
+	l125.Sleep(2 * time.Second)
+	l125.CicleSleep(3 * time.Second)
 
-	fmt.Println(p1.Distance(p2))
-
+	defer fmt.Println("main is ending...")
 }
