@@ -2,15 +2,14 @@ package main
 
 import (
 	"fmt"
-	"time"
 
-	l125 "github.com/tmozzze/WB_techoschool/L1/L1_25"
+	l126 "github.com/tmozzze/WB_techoschool/L1/L1_26"
 )
 
 func main() {
+	str := " "
+	nonUniqueStr := "saS KeK"
 
-	l125.Sleep(2 * time.Second)
-	l125.CicleSleep(3 * time.Second)
-
-	defer fmt.Println("main is ending...")
+	fmt.Println(l126.ChechUnique(str))
+	fmt.Println(l126.ChechUnique(nonUniqueStr))
 }
