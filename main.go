@@ -1,15 +1,19 @@
 package main
 
-import (
-	"fmt"
-
-	l126 "github.com/tmozzze/WB_techoschool/L1/L1_26"
-)
+import "fmt"
 
 func main() {
-	str := " "
-	nonUniqueStr := "saS KeK"
+	var s = []string{}
+	s = append(s, "1")
+	s = append(s, "2")
+	s = append(s, "3")
+	modifySlice(s)
+	fmt.Println(s)
+}
 
-	fmt.Println(l126.ChechUnique(str))
-	fmt.Println(l126.ChechUnique(nonUniqueStr))
+func modifySlice(i []string) {
+	i[0] = "3"
+	i = append(i, "4")
+	i[1] = "5"
+	i = append(i, "6")
 }
