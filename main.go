@@ -1,19 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	stringunpacker "github.com/tmozzze/WB_techoschool/L2/L2_9/string_unpacker"
+)
 
 func main() {
-	var s = []string{}
-	s = append(s, "1")
-	s = append(s, "2")
-	s = append(s, "3")
-	modifySlice(s)
-	fmt.Println(s)
-}
-
-func modifySlice(i []string) {
-	i[0] = "3"
-	i = append(i, "4")
-	i[1] = "5"
-	i = append(i, "6")
+	str := "qwe\\45"
+	fmt.Println(stringunpacker.Unpack(str))
 }
