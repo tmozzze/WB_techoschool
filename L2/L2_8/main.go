@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/tmozzze/WB_techoschool/L2/NTP/ntp"
+	"github.com/tmozzze/WB_techoschool/L2/L2_8/ntp"
 )
 
 func main() {
