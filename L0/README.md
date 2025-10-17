@@ -37,40 +37,22 @@
 
 ## Запуск проекта
 
-1. Создайте файл `.env` в корневой директории проекта со следующими переменными:
+1. *Создайте файл `.env` в корневой директории проекта, как показано в `.env.example`*
 
-```env
-POSTGRES_USER=your_user
-POSTGRES_PASSWORD=your_password
-POSTGRES_DB=your_db
-POSTGRES_PORT=5432
-TZ=UTC
-
-KAFKA_PORT=9092
-KAFKA_CONTROLLER_PORT=9093
-KAFKA_NODE_ID=1
-KAFKA_ADVERTISED_HOST=localhost
-```
-
-2. Запустите сервисы с помощью Docker Compose:
+2. *Запустите сервисы с помощью Makefile в bash:*
 
 ```bash
-docker-compose up -d
+make setup
 ```
+Все зависимости должны подтянуться
 
-3. Запустите приложение:
+3. *Запустите генерацию заказов в другом терминале bash:*
 
 ```bash
-go run cmd/app/main.go
+make generate-data
 ```
 
-3. Запустите генерацию заказов в другом терминале:
-
-```bash
-go run seed/seed.go
-```
-
-5. Откройте веб-интерфейс в браузере:
+4. Откройте веб-интерфейс в браузере:
 
 ```
 http://localhost:8080

@@ -14,7 +14,7 @@ run-server: build
 
 # Run docker-compose
 run: build
-	docker-compose up --remove-orphans --build -d
+	docker-compose up --build -d
 
 # Create new migration (make create-migration NAME=name)
 create-migration:
@@ -52,5 +52,16 @@ run-seed: seed-build
 down:
 	docker-compose down
 
-setup: run migrate-up-all
-	echo "Setup complete: containers running and migrations applied"
+down-and-clean:
+	docker-compose down -v
+
+setup: run
+	@echo "Wait..."
+	sleep 25
+	@$(MAKE) --silent migrate-up-all
+	@echo "Starting server..."
+	@$(MAKE) --silent run-server
+
+generate-data:
+	@echo "Starting generation..."
+	@$(MAKE) --silent run-seed
