@@ -1,0 +1,1 @@
+SELECT 'init_schema_down' AS name;
