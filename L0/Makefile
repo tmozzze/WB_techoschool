@@ -57,7 +57,7 @@ down-and-clean:
 
 setup: run
 	@echo "Wait..."
-	sleep 25
+	@sleep 3
 	@$(MAKE) --silent migrate-up-all
 	@echo "Starting server..."
 	@$(MAKE) --silent run-server
