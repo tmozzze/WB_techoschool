@@ -3,16 +3,13 @@ module github.com/tmozzze/order_checker
 go 1.24.4
 
 require (
+	github.com/go-chi/cors v1.2.2
 	github.com/jackc/pgx/v5 v5.7.5
 	github.com/joho/godotenv v1.5.1
 	github.com/segmentio/kafka-go v0.4.49
 )
 
-require (
-	github.com/golang-migrate/migrate/v4 v4.19.0 // indirect
-	github.com/hashicorp/errwrap v1.1.0 // indirect
-	github.com/hashicorp/go-multierror v1.1.1 // indirect
-)
+require github.com/stretchr/testify v1.10.0 // indirect
 
 require (
 	github.com/go-chi/chi/v5 v5.2.3

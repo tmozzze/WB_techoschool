@@ -10,7 +10,7 @@
 │   └── app/
 │       └── main.go          # Точка входа в приложение
 ├── database/
-│   └── init.sql            # SQL скрипт инициализации БД
+│   └── migrations           # SQL миграции
 ├── docker-compose.yml      # Конфигурация Docker контейнеров
 ├── internal/
 │   ├── api/               # HTTP обработчики
@@ -37,22 +37,40 @@
 
 ## Запуск проекта
 
-1. *Создайте файл `.env` в корневой директории проекта, как показано в `.env.example`*
+1. Создайте файл `.env` в корневой директории проекта со следующими переменными:
 
-2. *Запустите сервисы с помощью Makefile в bash:*
+```env
+POSTGRES_USER=your_user
+POSTGRES_PASSWORD=your_password
+POSTGRES_DB=your_db
+POSTGRES_PORT=5432
+TZ=UTC
+
+KAFKA_PORT=9092
+KAFKA_CONTROLLER_PORT=9093
+KAFKA_NODE_ID=1
+KAFKA_ADVERTISED_HOST=localhost
+```
+
+2. Запустите сервисы с помощью Docker Compose:
 
 ```bash
-make setup
+docker-compose up -d
 ```
-Все зависимости должны подтянуться
 
-3. *Запустите генерацию заказов в другом терминале bash:*
+3. Запустите приложение:
 
 ```bash
-make generate-data
+go run cmd/app/main.go
 ```
 
-4. Откройте веб-интерфейс в браузере:
+3. Запустите генерацию заказов в другом терминале:
+
+```bash
+go run seed/seed.go
+```
+
+5. Откройте веб-интерфейс в браузере:
 
 ```
 http://localhost:8080
