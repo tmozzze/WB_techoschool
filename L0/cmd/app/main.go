@@ -9,6 +9,9 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/segmentio/kafka-go"
+	httpSwagger "github.com/swaggo/http-swagger"
+
+	_ "github.com/tmozzze/order_checker/docs"
 	"github.com/tmozzze/order_checker/internal/api"
 	"github.com/tmozzze/order_checker/internal/cache"
 	"github.com/tmozzze/order_checker/internal/config"
@@ -17,6 +20,12 @@ import (
 	"github.com/tmozzze/order_checker/internal/repository"
 	"github.com/tmozzze/order_checker/internal/service"
 )
+
+// @title Order Checker API
+// @version 1.0
+// @description API для сохранения и получения заказов.
+// @host localhost:8080
+// @BasePath /
 
 func main() {
 	// Config
@@ -102,6 +111,9 @@ func main() {
 
 	// API
 	h.RegisterRoutes(r)
+
+	// Swagger UI
+	r.Get("/swagger/*", httpSwagger.WrapHandler)
 
 	// Serve openapi.yaml
 	apiFs := http.FileServer(http.Dir("./api"))
