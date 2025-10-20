@@ -65,3 +65,8 @@ setup: run
 generate-data:
 	@echo "Starting generation..."
 	@$(MAKE) --silent run-seed
+
+
+# Swagger docs gen
+swagger-gen:
+	swag init -g cmd/app/main.go -o docs

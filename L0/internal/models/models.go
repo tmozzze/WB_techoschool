@@ -2,6 +2,8 @@ package models
 
 import "time"
 
+// Delivery содержит данные получателя
+// swagger:model Delivery
 type Delivery struct {
 	Name    string `json:"name"`
 	Phone   string `json:"phone"`
@@ -12,6 +14,8 @@ type Delivery struct {
 	Email   string `json:"email"`
 }
 
+// Payment содержит данные о платеже
+// swagger:model Payment
 type Payment struct {
 	Transaction  string `json:"transaction"`
 	RequestID    string `json:"request_id"`
@@ -25,6 +29,8 @@ type Payment struct {
 	CustomFee    int    `json:"custom_fee"`
 }
 
+// Item описывает товар в заказе
+// swagger:model Item
 type Item struct {
 	ChrtID      int    `json:"chrt_id"`
 	TrackNumber string `json:"track_number"`
@@ -39,6 +45,8 @@ type Item struct {
 	Status      int    `json:"status"`
 }
 
+// Order представляет заказ целиком
+// swagger:model Order
 type Order struct {
 	OrderUID          string    `json:"order_uid"`
 	TrackNumber       string    `json:"track_number"`

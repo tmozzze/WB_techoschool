@@ -23,6 +23,16 @@ func (h *OrderHandler) RegisterRoutes(r chi.Router) {
 	r.Get("/orders/{id}", h.GetOrder)
 }
 
+// GetOrder godoc
+// @Summary Получить заказ по ID
+// @Description Возвращает заказ по идентификатору
+// @Tags orders
+// @Param id path string true "Order ID"
+// @Produce json
+// @Success 200 {object} models.Order
+// @Failure 400 {object} string "Missing order id"
+// @Failure 404 {object} string "Order not found"
+// @Router /orders/{id} [get]
 func (h *OrderHandler) GetOrder(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if id == "" {
@@ -41,6 +51,18 @@ func (h *OrderHandler) GetOrder(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// SaveOrder godoc
+// @Summary Сохранить заказ
+// @Description Сохраняет заказ в базе данных
+// @Tags orders
+// @Accept json
+// @Produce json
+// @Param order body models.Order true "Order data"
+// @Success 202 {string} string "Accepted"
+// @Failure 400 {object} string "Invalid request body"
+// @Failure 409 {string} string "Order already exists"
+// @Failure 500 {object} string "Failed to save order"
+// @Router /orders [post]
 func (h *OrderHandler) SaveOrder(w http.ResponseWriter, r *http.Request) {
 	var order models.Order
 
