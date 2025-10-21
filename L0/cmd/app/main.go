@@ -147,58 +147,8 @@ func main() {
 	select {} // Wait forever
 }
 
-/*
-curl -X POST http://localhost:8080/orders \
-  -H "Content-Type: application/json" \
-  -d '{
-    "order_uid": "o-778",
-    "track_number": "TN-778",
-    "entry": "WBIL",
-    "locale": "en",
-    "customer_id": "user-124",
-    "delivery": {
-      "name": "Test User",
-      "phone": "+9720000000",
-      "city": "Tel Aviv",
-      "address": "Some Street 1",
-      "email": "user@test.com"
-    },
-    "payment": {
-      "transaction": "trx-778",
-      "currency": "USD",
-      "provider": "visa",
-      "amount": 100,
-      "payment_dt": 1637907727,
-      "bank": "alpha",
-      "delivery_cost": 10,
-      "goods_total": 90
-    },
-    "items": [
-      {
-        "chrt_id": 2,
-        "track_number": "TN-778",
-        "price": 100,
-        "rid": "some-rid",
-        "name": "Book",
-        "sale": 0,
-        "total_price": 100,
-        "nm_id": 11,
-        "brand": "NoName",
-        "status": 200
-      }
-    ]
-  }'
-
-*/
-
-/*
-curl http://localhost:8080/orders/o-778
-*/
-
-/*
-curl -X POST http://localhost:8080/orders \
-  -H "Content-Type: application/json" \
-  -d '{
+/* Example
+{
     "order_uid": "o-999",
     "track_number": "TN-999",
     "entry": "WBIL",
@@ -250,11 +200,5 @@ curl -X POST http://localhost:8080/orders \
         "status": 201
       }
     ]
-  }'
-
-*/
-
-/*
-curl http://localhost:8080/orders/o-999
-
+  }
 */
