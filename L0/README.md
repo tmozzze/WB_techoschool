@@ -106,7 +106,7 @@ make create-migration NAME=<имя_миграции>
 ```
 make migrate-up-all
 ```
-1. Использует CLI `migrate`
+1. Использует `golang-migrate CLI`
 2. Применяет все `.sql` миграции из `./database/migrations`
 
 ### Применяет только одну миграцию (последнюю).
