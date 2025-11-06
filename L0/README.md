@@ -8,10 +8,11 @@
 .
 ├── cmd/
 │   └── app/
-│       └── main.go          # Точка входа в приложение
+│       └── main.go        # Точка входа в приложение
 ├── database/
-│   └── init.sql            # SQL скрипт инициализации БД
-├── docker-compose.yml      # Конфигурация Docker контейнеров
+│   └── migrations         # SQL миграции
+├── docs/                  # Swagger докс
+├── docker-compose.yml     # Конфигурация Docker контейнеров
 ├── internal/
 │   ├── api/               # HTTP обработчики
 │   ├── cache/             # Реализация кэширования
@@ -22,59 +23,152 @@
 │   ├── repository/        # Репозиторий для работы с БД
 │   └── service/           # Бизнес-логика
 ├── seed/                  # Скрипты для заполнения данными
-└── web/                   # Веб-интерфейс
-    ├── index.html
-    ├── script.js
-    └── style.css
+├── web/                   # Веб-интерфейс
+│   ├── index.html
+│   ├── script.js
+│   └── style.css
+├── Makefile               # Команды для управления проектом
+└── .env.example           # Пример .env
 ```
 
-## Зависимости
+## Требования для запуска
 
-- Go 1.24.4
-- PostgreSQL
-- Kafka
-- Docker и Docker Compose
+- `Go 1.24` или версия выше
+- `PostgreSQL`
+- `Kafka`
+- `golang-migrate CLI`
+- `Docker` и `Docker Compose`
 
 ## Запуск проекта
 
-1. Создайте файл `.env` в корневой директории проекта со следующими переменными:
+1. Создайте файл `.env` в корневой директории проекта по примеру `.env.example`
 
-```env
-POSTGRES_USER=your_user
-POSTGRES_PASSWORD=your_password
-POSTGRES_DB=your_db
-POSTGRES_PORT=5432
-TZ=UTC
 
-KAFKA_PORT=9092
-KAFKA_CONTROLLER_PORT=9093
-KAFKA_NODE_ID=1
-KAFKA_ADVERTISED_HOST=localhost
-```
-
-2. Запустите сервисы с помощью Docker Compose:
+2. Запустите сборку и запуск приложения в терминале:
 
 ```bash
-docker-compose up -d
-```
-
-3. Запустите приложение:
-
-```bash
-go run cmd/app/main.go
+make setup
 ```
 
 3. Запустите генерацию заказов в другом терминале:
 
 ```bash
-go run seed/seed.go
+make seed-run
 ```
 
-5. Откройте веб-интерфейс в браузере:
+4. Откройте веб-интерфейс в браузере:
 
 ```
 http://localhost:8080
 ```
+
+5. Спецификацию API открыть в браузере:
+```
+http://localhost:8080/swagger/index.html
+```
+
+
+## Команды для управления проектом
+
+### Собирает Go-бинарь приложения.
+
+```
+make build
+```
+1. Скачивает все зависимости через go mod download
+2. Собирает бинарь `./bin/app` из `./cmd/app/main.go`
+
+### Запускает сервер Go.
+
+```
+make run-server
+```
+1. Сначала выполняется `build`
+2. Затем запускается бинарь `./bin/app`
+
+### Поднимает контейнеры через Docker Compose.
+
+```
+make run
+```
+1. Сначала выполняется `build`
+2. Затем запускаются все сервисы, описанные в `docker-compose.yml` в фоне `(-d)`
+
+### Создаёт новую миграцию SQL.
+
+```
+make create-migration NAME=<имя_миграции>
+```
+1. Файлы миграции создаются в папке `database/migrations`
+
+### Применяет все миграции к базе данных.
+
+```
+make migrate-up-all
+```
+1. Использует `golang-migrate CLI`
+2. Применяет все `.sql` миграции из `./database/migrations`
+
+### Применяет только одну миграцию (последнюю).
+
+```
+make migrate-up
+```
+
+### Применяет только одну миграцию (последнюю).
+
+```
+make migrate-down
+```
+
+### Показывает текущую версию миграций в базе.
+
+```
+make migrate-status
+```
+
+### Откатывает все миграции (полностью очищает базу).
+
+```
+make migrate-reset
+```
+
+### Компилирует и запускает скрипт для генерации тестовых данных.
+
+```
+make run-seed
+```
+
+### Останавливает контейнеры Docker.
+
+```
+make down             # остановка контейнеров
+make down-and-clean   # остановка и удаление томов
+```
+
+### Полная установка и запуск сервера на новом окружении.
+
+```
+make setup
+```
+1. Поднимает Docker-контейнеры `(run)`
+2. Применяет все миграции `(migrate-up-all)`
+3. Запускает Go-сервер `(run-server)`
+
+### Генерирует тестовые данные для базы.
+
+```
+make generate-data
+```
+1. По сути вызывает `(run-seed)` и выполняет скрипт генерации данных.
+
+### Генерирует Swagger документацию для API.
+
+```
+make swagger-gen
+```
+1. Сканирует `cmd/app/main.go`
+2. Создаёт документацию в папке `docs`
 
 ## Основные компоненты
 

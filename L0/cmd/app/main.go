@@ -4,9 +4,14 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/cors"
 	"github.com/segmentio/kafka-go"
+	httpSwagger "github.com/swaggo/http-swagger"
+
+	_ "github.com/tmozzze/order_checker/docs"
 	"github.com/tmozzze/order_checker/internal/api"
 	"github.com/tmozzze/order_checker/internal/cache"
 	"github.com/tmozzze/order_checker/internal/config"
@@ -15,6 +20,12 @@ import (
 	"github.com/tmozzze/order_checker/internal/repository"
 	"github.com/tmozzze/order_checker/internal/service"
 )
+
+// @title Order Checker API
+// @version 1.0
+// @description API для сохранения и получения заказов.
+// @host localhost:8080
+// @BasePath /
 
 func main() {
 	// Config
@@ -34,18 +45,26 @@ func main() {
 
 	log.Println("Connected to Postgres on port", cfg.DBPort)
 
-	// Repositories and cache(capacity: 100)
+	// Repositories and cache
 	repo := repository.NewOrderRepository(database.Pool)
 
 	log.Println("Start preloading data in cache...")
-	c := cache.New(100)
+	c := cache.New(cfg.CacheCapacity)
 
 	// Kafka
-	broker := "localhost:9092"
-	topic := "orders"
+	broker := cfg.KafkaHost + ":" + cfg.KafkaPort
+	topic := cfg.KafkaTopic
 
-	if err := kafka_consumer.EnsureTopic(broker, topic, 1, 1); err != nil {
-		log.Fatal("failed to ensure topic:", err)
+	for i := 0; i < 10; i++ { // Попробовать 10 раз
+		err = kafka_consumer.EnsureTopic(broker, topic, cfg.KafkaPartitions, cfg.KafkaReplication)
+		if err == nil {
+			break // Успех
+		}
+		log.Printf("failed to ensure topic (try %d/10): %v. Retry...", i+1, err)
+		time.Sleep(5 * time.Second)
+	}
+	if err != nil {
+		log.Fatalf("failed to ensure topic: %v", err)
 	}
 
 	processedC := make(chan string)
@@ -61,7 +80,7 @@ func main() {
 	consumer := kafka_consumer.NewConsumer(
 		[]string{broker},
 		topic,
-		"test-group",
+		cfg.KafkaConsumerGroup,
 		repo,
 		c,
 		processedC,
@@ -81,22 +100,38 @@ func main() {
 	// Router
 	r := chi.NewRouter()
 
-	// Frontend
-	fs := http.FileServer(http.Dir("./web"))
-	r.Handle("/*", fs)
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"http://*", "https://*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: true,
+		MaxAge:           300,
+	}))
 
 	// API
 	h.RegisterRoutes(r)
 
+	// Swagger UI
+	r.Get("/swagger/*", httpSwagger.WrapHandler)
+
+	// Serve openapi.yaml
+	apiFs := http.FileServer(http.Dir("./api"))
+	r.Handle("/api/*", http.StripPrefix("/api/", apiFs))
+
+	// Frontend
+	fs := http.FileServer(http.Dir("./web"))
+	r.Handle("/*", fs)
+
 	// Start HTTP Server on :8080
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":" + cfg.ServerPort,
 		Handler: r,
 	}
 
 	log.Println("Starting HTTP server...")
 	go func() {
-		log.Println("HTTP server started on :8080")
+		log.Printf("HTTP server started on %s\n", cfg.ServerPort)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatal("server failed:", err)
 		}
@@ -112,58 +147,8 @@ func main() {
 	select {} // Wait forever
 }
 
-/*
-curl -X POST http://localhost:8080/orders \
-  -H "Content-Type: application/json" \
-  -d '{
-    "order_uid": "o-778",
-    "track_number": "TN-778",
-    "entry": "WBIL",
-    "locale": "en",
-    "customer_id": "user-124",
-    "delivery": {
-      "name": "Test User",
-      "phone": "+9720000000",
-      "city": "Tel Aviv",
-      "address": "Some Street 1",
-      "email": "user@test.com"
-    },
-    "payment": {
-      "transaction": "trx-778",
-      "currency": "USD",
-      "provider": "visa",
-      "amount": 100,
-      "payment_dt": 1637907727,
-      "bank": "alpha",
-      "delivery_cost": 10,
-      "goods_total": 90
-    },
-    "items": [
-      {
-        "chrt_id": 2,
-        "track_number": "TN-778",
-        "price": 100,
-        "rid": "some-rid",
-        "name": "Book",
-        "sale": 0,
-        "total_price": 100,
-        "nm_id": 11,
-        "brand": "NoName",
-        "status": 200
-      }
-    ]
-  }'
-
-*/
-
-/*
-curl http://localhost:8080/orders/o-778
-*/
-
-/*
-curl -X POST http://localhost:8080/orders \
-  -H "Content-Type: application/json" \
-  -d '{
+/* Example
+{
     "order_uid": "o-999",
     "track_number": "TN-999",
     "entry": "WBIL",
@@ -215,11 +200,5 @@ curl -X POST http://localhost:8080/orders \
         "status": 201
       }
     ]
-  }'
-
-*/
-
-/*
-curl http://localhost:8080/orders/o-999
-
+  }
 */
