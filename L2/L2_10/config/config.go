@@ -21,7 +21,7 @@ func NewConfig() *Config {
 }
 
 func (c *Config) Print() {
-	fmt.Printf("Config: -k: %v | -n: %v | -r: %v | -u: %v | sep: %q\n", c.Key, c.Num, c.Reverse, c.Unique, c.Sep)
+	fmt.Printf("Config: -k: %v | -n: %v | -r: %v | -u: %v | -M: %v | sep: %q\n", c.Key, c.Num, c.Reverse, c.Unique, c.Month, c.Sep)
 }
 
 func ParseFlags() *Config {
