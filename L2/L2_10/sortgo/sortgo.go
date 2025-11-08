@@ -59,12 +59,18 @@ func getSortKey(line *Line, flags *config.Config) string {
 	return line.Raw
 }
 
+// Make sorting slice of *Line
 func sortLines(lines []*Line, flags *config.Config) {
 	sort.SliceStable(lines, func(i, j int) bool {
 		keyI := getSortKey(lines[i], flags) // When -k given --> field
 		keyJ := getSortKey(lines[j], flags) // When -k default --> raw
 
-		// When -n given
+		// When -M given --- Month Sort ---
+		if flags.Month {
+			return monthSort(keyI, keyJ)
+		}
+
+		// When -n given --- Numeric Sort ---
 		if flags.Num {
 			numI, errI := strconv.ParseFloat(keyI, 64)
 			numJ, errJ := strconv.ParseFloat(keyJ, 64)

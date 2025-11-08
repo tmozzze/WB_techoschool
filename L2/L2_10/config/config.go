@@ -8,11 +8,12 @@ import (
 )
 
 type Config struct {
-	Key     int    // default 0 - means not used
-	Num     bool   // defaul false - means not used
-	Reverse bool   // defaul false - means not used
-	Unique  bool   // defaul false - means not used
-	Sep     string // defaul \t
+	Key     int    // default 0 - means not used     (-k)
+	Num     bool   // default false - means not used (-n)
+	Reverse bool   // default false - means not used (-r)
+	Unique  bool   // default false - means not used (-u)
+	Month   bool   // default false - means not used (-M)
+	Sep     string // default \t
 }
 
 func NewConfig() *Config {
@@ -30,6 +31,7 @@ func ParseFlags() *Config {
 	pflag.BoolVarP(&cfg.Num, "num", "n", false, "Num-sort")
 	pflag.BoolVarP(&cfg.Reverse, "reverse", "r", false, "Reverse output")
 	pflag.BoolVarP(&cfg.Unique, "unique", "u", false, "Unique output")
+	pflag.BoolVarP(&cfg.Month, "month", "M", false, "Sort by month name (Jan, Feb...)")
 	pflag.Parse()
 
 	if cfg.Key < 0 {
