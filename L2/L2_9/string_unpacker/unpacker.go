@@ -9,7 +9,6 @@ import (
 func Unpack(str string) (string, error) {
 	runes := []rune(str)
 
-	// Checking empty string
 	if len(runes) == 0 {
 		return "", nil
 	}
@@ -67,5 +66,3 @@ func Unpack(str string) (string, error) {
 	return string(result), nil
 
 }
-
-// g2
