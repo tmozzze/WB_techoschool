@@ -10,8 +10,8 @@ func stringSort(lineI, lineJ *model.Line, flags *config.Config) bool {
 	keyJ := getSortKey(lineJ, flags) // When -k default --> raw
 
 	if keyI == keyJ {
-		return lineI.Raw < lineJ.Raw
+		return lineI.Raw > lineJ.Raw
 	}
 
-	return keyI < keyJ
+	return keyI > keyJ
 }

@@ -16,19 +16,19 @@ func numericSort(lineI, lineJ *model.Line, flags *config.Config) bool {
 
 	// When 1st and 2nd are not num
 	if errI != nil && errJ != nil {
-		return keyI < keyJ
+		return keyI > keyJ
 	}
 	// When 1st not num
 	if errI != nil {
-		return true
+		return false
 	}
 	// When 2nd not num
 	if errJ != nil {
-		return false
+		return true
 	}
 
 	if numI == numJ {
-		return lineI.Raw < lineJ.Raw
+		return lineI.Raw > lineJ.Raw
 	}
-	return numI < numJ
+	return numI > numJ
 }

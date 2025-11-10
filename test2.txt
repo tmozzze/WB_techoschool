@@ -1,2 +1,2 @@
-apple	3
-banana	2
+banana	3
+apple	2

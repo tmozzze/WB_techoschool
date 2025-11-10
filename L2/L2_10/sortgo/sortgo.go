@@ -61,6 +61,15 @@ func Sort() {
 	// make slie of *Line from text
 	lines := readLines(reader, flags)
 
+	// Если включен флаг -c, проверяем порядок
+	if flags.Check {
+		if !checkSorted(lines, flags) {
+			os.Exit(1) // выход с ошибкой, если данные не отсортированы
+		}
+		// Если отсортированы — можно просто выйти или ничего не выводить
+		return
+	}
+
 	// when -u given remove duplicates
 	if flags.Unique {
 		lines = removeDuplicates(lines, flags)
