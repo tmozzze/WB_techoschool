@@ -3,6 +3,9 @@ package sortgo
 import (
 	"fmt"
 	"strings"
+
+	"github.com/tmozzze/WB_techoschool/L2/L2_10/config"
+	"github.com/tmozzze/WB_techoschool/L2/L2_10/model"
 )
 
 func getMonthValue(monthName string) (int, error) {
@@ -26,7 +29,10 @@ func getMonthValue(monthName string) (int, error) {
 	return value, nil
 }
 
-func monthSort(keyI, keyJ string) bool {
+func monthSort(lineI, lineJ *model.Line, flags *config.Config) bool {
+	keyI := getSortKey(lineI, flags) // When -k given --> field
+	keyJ := getSortKey(lineJ, flags) // When -k default --> raw
+
 	monthI, errI := getMonthValue(keyI)
 	monthJ, errJ := getMonthValue(keyJ)
 
@@ -41,6 +47,10 @@ func monthSort(keyI, keyJ string) bool {
 	// When 2nd are not month
 	if errJ != nil {
 		return false
+	}
+
+	if monthI == monthJ {
+		return lineI.Raw < lineJ.Raw
 	}
 	// When allright
 	return monthI < monthJ

@@ -1,4 +1,4 @@
-package sortgo
+package model
 
 import "strings"
 
@@ -11,11 +11,13 @@ func NewLine(raw string) *Line {
 	return &Line{Raw: raw}
 }
 
-func (l *Line) splitFields(sep string) {
+// splitFields - take raw and split by separator
+func (l *Line) SplitFields(sep string) {
 	l.Fields = strings.Split(l.Raw, sep)
 }
 
-func (l *Line) getField(key int) string {
+// getField - fill empty field
+func (l *Line) GetField(key int) string {
 	if key <= len(l.Fields) {
 		return l.Fields[key-1]
 	}

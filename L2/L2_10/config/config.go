@@ -8,20 +8,29 @@ import (
 )
 
 type Config struct {
-	Key     int    // default 0 - means not used     (-k)
-	Num     bool   // default false - means not used (-n)
-	Reverse bool   // default false - means not used (-r)
-	Unique  bool   // default false - means not used (-u)
-	Month   bool   // default false - means not used (-M)
-	Sep     string // default \t
+	Key            int    // default 0 - means not used     (-k)
+	Num            bool   // default false - means not used (-n)
+	Reverse        bool   // default false - means not used (-r)
+	Unique         bool   // default false - means not used (-u)
+	Month          bool   // default false - means not used (-M)
+	IgnoreTrailing bool   // default false - means not used (-b)
+	Sep            string // default \t
 }
 
 func NewConfig() *Config {
-	return &Config{Key: 0, Num: false, Reverse: false, Unique: false, Sep: "\t"}
+	return &Config{
+		Key:            0,
+		Num:            false,
+		Reverse:        false,
+		Unique:         false,
+		Month:          false,
+		IgnoreTrailing: false,
+		Sep:            "\t",
+	}
 }
 
 func (c *Config) Print() {
-	fmt.Printf("Config: -k: %v | -n: %v | -r: %v | -u: %v | sep: %q\n", c.Key, c.Num, c.Reverse, c.Unique, c.Sep)
+	fmt.Printf("Config: -k: %v | -n: %v | -r: %v | -u: %v | -M: %v | -b: %v | sep: %q\n", c.Key, c.Num, c.Reverse, c.Unique, c.Month, c.IgnoreTrailing, c.Sep)
 }
 
 func ParseFlags() *Config {
@@ -32,6 +41,7 @@ func ParseFlags() *Config {
 	pflag.BoolVarP(&cfg.Reverse, "reverse", "r", false, "Reverse output")
 	pflag.BoolVarP(&cfg.Unique, "unique", "u", false, "Unique output")
 	pflag.BoolVarP(&cfg.Month, "month", "M", false, "Sort by month name (Jan, Feb...)")
+	pflag.BoolVarP(&cfg.IgnoreTrailing, "ignore-trailing", "b", false, "ignore trailing spaces")
 	pflag.Parse()
 
 	if cfg.Key < 0 {

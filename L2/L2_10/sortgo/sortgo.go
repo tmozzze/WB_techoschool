@@ -1,109 +1,54 @@
 package sortgo
 
 import (
-	"bufio"
 	"fmt"
-	"io"
 	"os"
 	"sort"
-	"strconv"
 
 	"github.com/spf13/pflag"
 	"github.com/tmozzze/WB_techoschool/L2/L2_10/config"
+	"github.com/tmozzze/WB_techoschool/L2/L2_10/model"
 )
 
-func printLines(lines []*Line, flags *config.Config) {
-	// When -u given
-	if flags.Reverse {
-		for i := 0; i <= len(lines)-1; i++ {
-			fmt.Println(lines[i].Raw)
-		}
-	} else {
-		// Default
-		for i := len(lines) - 1; i >= 0; i-- {
-			fmt.Println(lines[i].Raw)
-		}
-	}
-}
-
-func readLines(reader io.Reader, flags *config.Config) []*Line {
-	scanner := bufio.NewScanner(reader)
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintf(os.Stderr, "read error: %v\n", err)
-		os.Exit(1)
-	}
-
-	var lines []*Line                  // slice for line obj
-	uniqueMap := make(map[string]bool) // map for check unique
-
-	for scanner.Scan() {
-		raw := scanner.Text()
-		if flags.Unique && uniqueMap[raw] {
-			continue
-		}
-		uniqueMap[raw] = true
-		// create new line object
-		line := NewLine(raw)
-		// split fileds for line object
-		line.splitFields(flags.Sep)
-		lines = append(lines, line)
-	}
-
-	return lines
-}
-
-func getSortKey(line *Line, flags *config.Config) string {
+// getSortKey - Get raw if -k = 0, else get field
+func getSortKey(line *model.Line, flags *config.Config) string {
+	var key string
 	if flags.Key > 0 {
-		return line.getField(flags.Key)
+		key = line.GetField(flags.Key)
+	} else {
+		key = line.Raw
 	}
-	return line.Raw
+
+	if flags.IgnoreTrailing {
+		key = trimTrailingSpaces(key)
+	}
+
+	return key
 }
 
-// Make sorting slice of *Line
-func sortLines(lines []*Line, flags *config.Config) {
+// sortLines - make sorting slice of *Line
+func sortLines(lines []*model.Line, flags *config.Config) {
 	sort.SliceStable(lines, func(i, j int) bool {
-		keyI := getSortKey(lines[i], flags) // When -k given --> field
-		keyJ := getSortKey(lines[j], flags) // When -k default --> raw
+		lineI := lines[i]
+		lineJ := lines[j]
 
-		// When -M given --- Month Sort ---
-		if flags.Month {
-			return monthSort(keyI, keyJ)
+		switch {
+		case flags.Month:
+			// when -M given
+			return monthSort(lineI, lineJ, flags)
+		case flags.Num:
+			// when -n given
+			return numericSort(lineI, lineJ, flags)
+		default:
+			return stringSort(lineI, lineJ, flags)
 		}
 
-		// When -n given --- Numeric Sort ---
-		if flags.Num {
-			numI, errI := strconv.ParseFloat(keyI, 64)
-			numJ, errJ := strconv.ParseFloat(keyJ, 64)
-
-			// When 1st and 2nd are not num
-			if errI != nil && errJ != nil {
-				return keyI < keyJ
-			}
-			// When 1st not num
-			if errI != nil {
-				return true
-			}
-			// When 2nd not num
-			if errJ != nil {
-				return false
-			}
-
-			if numI == numJ {
-				return lines[i].Raw < lines[j].Raw
-			}
-			return numI < numJ
-		}
-
-		if keyI == keyJ {
-			return lines[i].Raw < lines[j].Raw
-		}
-
-		return keyI < keyJ
 	})
 }
 
 // Sort - make sorting string with flags
 func Sort() {
+	// get flags
 	flags := config.ParseFlags()
 
 	reader, cleanup, err := getInputReader(pflag.Args())
@@ -111,14 +56,17 @@ func Sort() {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
-	defer cleanup()
+	defer cleanup() // defer file.close()
 
+	// make slie of *Line from text
 	lines := readLines(reader, flags)
 
+	// when -u given remove duplicates
+	if flags.Unique {
+		lines = removeDuplicates(lines, flags)
+	}
+	// sorting
 	sortLines(lines, flags)
-
+	// print results (when -r given make reverse)
 	printLines(lines, flags)
 }
-
-// TODO: Refactoring code
-//       Create any modes
