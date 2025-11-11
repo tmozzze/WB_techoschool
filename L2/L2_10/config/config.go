@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/pflag"
 )
 
+// Config - holds all command-line flags and settings.
 type Config struct {
 	Key            int    // default 0 - means not used     (-k)
 	Num            bool   // default false - means not used (-n)
@@ -19,6 +20,7 @@ type Config struct {
 	Sep            string // default \t
 }
 
+// NewConfig creates a new Config with default values.
 func NewConfig() *Config {
 	return &Config{
 		Key:            0,
@@ -33,6 +35,7 @@ func NewConfig() *Config {
 	}
 }
 
+// Print - prints the current configuration to stdout.
 func (c *Config) Print() {
 	fmt.Printf(
 		"Config: -k: %v | -n: %v | -r: %v | -u: %v |\n"+
@@ -49,10 +52,11 @@ func (c *Config) Print() {
 	)
 }
 
+// ParseFlags - parses command-line flags and returns the resulting Config.
 func ParseFlags() *Config {
 	cfg := NewConfig()
 
-	pflag.IntVarP(&cfg.Key, "key", "k", 0, "Number of column(required)")
+	pflag.IntVarP(&cfg.Key, "key", "k", 0, "Number of column")
 	pflag.BoolVarP(&cfg.Num, "num", "n", false, "Num-sort")
 	pflag.BoolVarP(&cfg.Reverse, "reverse", "r", false, "Reverse output")
 	pflag.BoolVarP(&cfg.Unique, "unique", "u", false, "Unique output")
@@ -68,6 +72,6 @@ func ParseFlags() *Config {
 		os.Exit(1)
 	}
 
-	cfg.Print()
+	//cfg.Print()
 	return cfg
 }

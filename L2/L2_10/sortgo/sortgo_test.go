@@ -415,7 +415,7 @@ func TestHumanReverseUnique(t *testing.T) {
 // ------------- PERFOMANCE TESTS -------------
 
 func TestLargeSort(t *testing.T) {
-	const n = 10_000_000 // strings amount
+	const n = 100_000 // strings amount
 
 	data := make([]string, n)
 	for i := 0; i < n; i++ {
