@@ -11,24 +11,36 @@ func numericSort(lineI, lineJ *model.Line, flags *config.Config) bool {
 	keyI := getSortKey(lineI, flags) // When -k given --> field
 	keyJ := getSortKey(lineJ, flags) // When -k default --> raw
 
-	numI, errI := strconv.ParseFloat(keyI, 64)
-	numJ, errJ := strconv.ParseFloat(keyJ, 64)
+	var numI, numJ float64
+	var errI, errJ error
+
+	if flags.Human {
+		numI, errI = parseHumanReadable(keyI)
+		numJ, errJ = parseHumanReadable(keyJ)
+		// if errI != nil || errJ != nil {
+		// 	numI, errI = strconv.ParseFloat(keyI, 64)
+		// 	numJ, errJ = strconv.ParseFloat(keyJ, 64)
+		// }
+	} else if flags.Num {
+		numI, errI = strconv.ParseFloat(keyI, 64)
+		numJ, errJ = strconv.ParseFloat(keyJ, 64)
+	}
 
 	// When 1st and 2nd are not num
 	if errI != nil && errJ != nil {
-		return keyI > keyJ
+		return keyI < keyJ
 	}
 	// When 1st not num
 	if errI != nil {
-		return false
+		return true
 	}
 	// When 2nd not num
 	if errJ != nil {
-		return true
+		return false
 	}
 
 	if numI == numJ {
-		return lineI.Raw > lineJ.Raw
+		return lineI.Raw < lineJ.Raw
 	}
-	return numI > numJ
+	return numI < numJ
 }

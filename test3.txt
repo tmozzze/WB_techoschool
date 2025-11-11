@@ -1,3 +1,16 @@
-apple	1	Dec
+apple
+banana
+banana   
+
 apple	10	Jan
+banana	2	Feb
+apple	1	Dec
+cherry 	12	Mar
+banana	10	January
+pear   	100	Oct
 apple	10	Nov
+banana	2	january
+apple
+apple    
+banana
+banana

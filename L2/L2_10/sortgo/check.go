@@ -18,7 +18,7 @@ func checkSorted(lines []*model.Line, flags *config.Config) bool {
 		switch {
 		case flags.Month:
 			outOfOrder = monthSort(linePrev, lineCurr, flags)
-		case flags.Num:
+		case flags.Num || flags.Human:
 			outOfOrder = numericSort(linePrev, lineCurr, flags)
 		default:
 			outOfOrder = stringSort(linePrev, lineCurr, flags)

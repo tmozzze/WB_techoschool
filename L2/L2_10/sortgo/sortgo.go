@@ -32,16 +32,24 @@ func sortLines(lines []*model.Line, flags *config.Config) {
 		lineI := lines[i]
 		lineJ := lines[j]
 
+		var result bool
+
 		switch {
 		case flags.Month:
 			// when -M given
-			return monthSort(lineI, lineJ, flags)
-		case flags.Num:
-			// when -n given
-			return numericSort(lineI, lineJ, flags)
+			result = monthSort(lineI, lineJ, flags)
+		case flags.Num || flags.Human:
+			// when -n or -h given
+			result = numericSort(lineI, lineJ, flags)
 		default:
-			return stringSort(lineI, lineJ, flags)
+			result = stringSort(lineI, lineJ, flags)
 		}
+
+		if flags.Reverse {
+			return !result
+		}
+
+		return result
 
 	})
 }
@@ -61,12 +69,11 @@ func Sort() {
 	// make slie of *Line from text
 	lines := readLines(reader, flags)
 
-	// Если включен флаг -c, проверяем порядок
+	// when -c given
 	if flags.Check {
 		if !checkSorted(lines, flags) {
-			os.Exit(1) // выход с ошибкой, если данные не отсортированы
+			os.Exit(1)
 		}
-		// Если отсортированы — можно просто выйти или ничего не выводить
 		return
 	}
 
@@ -77,5 +84,5 @@ func Sort() {
 	// sorting
 	sortLines(lines, flags)
 	// print results (when -r given make reverse)
-	printLines(lines, flags)
+	printLines(lines)
 }

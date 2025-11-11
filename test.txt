@@ -1,12 +1,15 @@
-apple	10	Jan
-banana	2	Feb
-apple	1	Dec
-cherry 	12	Mar
-banana	10	January
-pear   	100	Oct
-apple	10	Nov
-banana	2	january
+cherry
+1K
+512
+2M
+100K
+Jan
+Feb
+Mar
+Dec
+Aug
 apple
-apple    
-banana
-banana
+42
+007
+42 
+  apple

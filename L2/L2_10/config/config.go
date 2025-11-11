@@ -15,6 +15,7 @@ type Config struct {
 	Month          bool   // default false - means not used (-M)
 	IgnoreTrailing bool   // default false - means not used (-b)
 	Check          bool   // default false - means not used (-c)
+	Human          bool   // default false - means not used (-h)
 	Sep            string // default \t
 }
 
@@ -27,6 +28,7 @@ func NewConfig() *Config {
 		Month:          false,
 		IgnoreTrailing: false,
 		Check:          false,
+		Human:          false,
 		Sep:            "\t",
 	}
 }
@@ -34,7 +36,7 @@ func NewConfig() *Config {
 func (c *Config) Print() {
 	fmt.Printf(
 		"Config: -k: %v | -n: %v | -r: %v | -u: %v |\n"+
-			" -M: %v | -b: %v | -c: %v | sep: %q\n",
+			" -M: %v | -b: %v | -c: %v | -h: %v sep: %q\n",
 		c.Key,
 		c.Num,
 		c.Reverse,
@@ -42,6 +44,7 @@ func (c *Config) Print() {
 		c.Month,
 		c.IgnoreTrailing,
 		c.Check,
+		c.Human,
 		c.Sep,
 	)
 }
@@ -56,6 +59,7 @@ func ParseFlags() *Config {
 	pflag.BoolVarP(&cfg.Month, "month", "M", false, "Sort by month name (Jan, Feb...)")
 	pflag.BoolVarP(&cfg.IgnoreTrailing, "ignore-trailing", "b", false, "ignore trailing spaces")
 	pflag.BoolVarP(&cfg.Check, "check", "c", false, "check sort")
+	pflag.BoolVarP(&cfg.Human, "human-readable", "h", false, "human-readable sort")
 
 	pflag.Parse()
 

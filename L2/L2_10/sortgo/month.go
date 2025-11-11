@@ -38,20 +38,20 @@ func monthSort(lineI, lineJ *model.Line, flags *config.Config) bool {
 
 	// When 1st and 2nd are not month
 	if errI != nil && errJ != nil {
-		return keyI > keyJ
+		return keyI < keyJ
 	}
 	// When 1st are not month
 	if errI != nil {
-		return false
+		return true
 	}
 	// When 2nd are not month
 	if errJ != nil {
-		return true
+		return false
 	}
 
 	if monthI == monthJ {
-		return lineI.Raw > lineJ.Raw
+		return lineI.Raw < lineJ.Raw
 	}
 	// When allright
-	return monthI > monthJ
+	return monthI < monthJ
 }
