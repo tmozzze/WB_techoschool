@@ -33,6 +33,34 @@ func assertEqual(t *testing.T, lines []*model.Line, expected []string) {
 
 // ------------- FLAG TESTS -------------
 
+func TestCheck(t *testing.T) {
+	// Unsorted
+	data := []string{
+		"banana",
+		"apple",
+		"cherry",
+	}
+
+	lines := makeLines(data)
+	flags := &config.Config{Check: true}
+
+	if checkSorted(lines, flags) {
+		t.Errorf("expected checkSorted to return false for unsorted input, got true")
+	}
+
+	// Sorted
+	sortedData := []string{
+		"apple",
+		"banana",
+		"cherry",
+	}
+	lines = makeLines(sortedData)
+
+	if !checkSorted(lines, flags) {
+		t.Errorf("expected checkSorted to return true for sorted input, got false")
+	}
+}
+
 func TestStringSortExpected(t *testing.T) {
 	data := []string{
 		"banana",
