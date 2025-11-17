@@ -1,9 +1,14 @@
 package main
 
 import (
-	"github.com/tmozzze/WB_techoschool/L2/L2_10/sortgo"
+	"fmt"
+
+	"github.com/tmozzze/WB_techoschool/L2/L2_11/anagrams"
 )
 
 func main() {
-	sortgo.Sort()
+	words := []string{"пятак", "пятка", "тяпка", "листок", "слиток", "столик", "стол"}
+
+	result := anagrams.FindAnagrams(words)
+	fmt.Println(result)
 }
