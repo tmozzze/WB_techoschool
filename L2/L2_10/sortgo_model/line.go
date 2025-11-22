@@ -1,4 +1,4 @@
-package model
+package sortgo_model
 
 import "strings"
 

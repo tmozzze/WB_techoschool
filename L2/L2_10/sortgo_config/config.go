@@ -1,4 +1,4 @@
-package config
+package sortgo_config
 
 import (
 	"fmt"

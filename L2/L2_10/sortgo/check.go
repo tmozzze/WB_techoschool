@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/tmozzze/WB_techoschool/L2/L2_10/config"
-	"github.com/tmozzze/WB_techoschool/L2/L2_10/model"
+	"github.com/tmozzze/WB_techoschool/L2/L2_10/sortgo_config"
+	"github.com/tmozzze/WB_techoschool/L2/L2_10/sortgo_model"
 )
 
-func checkSorted(lines []*model.Line, flags *config.Config) bool {
+func checkSorted(lines []*sortgo_model.Line, flags *sortgo_config.Config) bool {
 	for i := 1; i < len(lines); i++ {
 		lineI := lines[i-1]
 		lineJ := lines[i]

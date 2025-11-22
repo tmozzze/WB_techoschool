@@ -1,12 +1,12 @@
 package sortgo
 
 import (
-	"github.com/tmozzze/WB_techoschool/L2/L2_10/config"
-	"github.com/tmozzze/WB_techoschool/L2/L2_10/model"
+	"github.com/tmozzze/WB_techoschool/L2/L2_10/sortgo_config"
+	"github.com/tmozzze/WB_techoschool/L2/L2_10/sortgo_model"
 )
 
-func removeDuplicates(lines []*model.Line, flags *config.Config) []*model.Line {
-	var unique []*model.Line
+func removeDuplicates(lines []*sortgo_model.Line, flags *sortgo_config.Config) []*sortgo_model.Line {
+	var unique []*sortgo_model.Line
 	uniqueMap := make(map[string]struct{})
 
 	for _, line := range lines {

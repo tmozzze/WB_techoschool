@@ -6,12 +6,12 @@ import (
 	"sort"
 
 	"github.com/spf13/pflag"
-	"github.com/tmozzze/WB_techoschool/L2/L2_10/config"
-	"github.com/tmozzze/WB_techoschool/L2/L2_10/model"
+	"github.com/tmozzze/WB_techoschool/L2/L2_10/sortgo_config"
+	"github.com/tmozzze/WB_techoschool/L2/L2_10/sortgo_model"
 )
 
 // getSortKey - Get raw if -k = 0, else get field
-func getSortKey(line *model.Line, flags *config.Config) string {
+func getSortKey(line *sortgo_model.Line, flags *sortgo_config.Config) string {
 	var key string
 	if flags.Key > 0 {
 		key = line.GetField(flags.Key)
@@ -27,7 +27,7 @@ func getSortKey(line *model.Line, flags *config.Config) string {
 }
 
 // sortLines - make sorting slice of *Line
-func sortLines(lines []*model.Line, flags *config.Config) {
+func sortLines(lines []*sortgo_model.Line, flags *sortgo_config.Config) {
 	sort.SliceStable(lines, func(i, j int) bool {
 		lineI := lines[i]
 		lineJ := lines[j]
@@ -57,7 +57,7 @@ func sortLines(lines []*model.Line, flags *config.Config) {
 // Sort - make sorting string with flags
 func Sort() {
 	// get flags
-	flags := config.ParseFlags()
+	flags := sortgo_config.ParseFlags()
 
 	reader, cleanup, err := getInputReader(pflag.Args())
 	if err != nil {

@@ -4,15 +4,15 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/tmozzze/WB_techoschool/L2/L2_10/config"
-	"github.com/tmozzze/WB_techoschool/L2/L2_10/model"
+	"github.com/tmozzze/WB_techoschool/L2/L2_10/sortgo_config"
+	"github.com/tmozzze/WB_techoschool/L2/L2_10/sortgo_model"
 )
 
 // makeLines - make Liens from Strings for tests
-func makeLines(data []string) []*model.Line {
-	var lines []*model.Line
+func makeLines(data []string) []*sortgo_model.Line {
+	var lines []*sortgo_model.Line
 	for _, s := range data {
-		l := model.NewLine(s)
+		l := sortgo_model.NewLine(s)
 		l.SplitFields("\t") // default \t
 		lines = append(lines, l)
 	}
@@ -20,7 +20,7 @@ func makeLines(data []string) []*model.Line {
 }
 
 // assertEqual - check equal expected
-func assertEqual(t *testing.T, lines []*model.Line, expected []string) {
+func assertEqual(t *testing.T, lines []*sortgo_model.Line, expected []string) {
 	if len(lines) != len(expected) {
 		t.Fatalf("Length mismatch: got %d lines, want %d", len(lines), len(expected))
 	}
@@ -42,7 +42,7 @@ func TestCheck(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Check: true}
+	flags := &sortgo_config.Config{Check: true}
 
 	if checkSorted(lines, flags) {
 		t.Errorf("expected checkSorted to return false for unsorted input, got true")
@@ -74,7 +74,7 @@ func TestStringSortExpected(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{}
+	flags := &sortgo_config.Config{}
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -93,7 +93,7 @@ func TestFlagKey(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Key: 2} // сортировка по колонке 2
+	flags := &sortgo_config.Config{Key: 2} // сортировка по колонке 2
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -112,7 +112,7 @@ func TestFlagNum(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Num: true}
+	flags := &sortgo_config.Config{Num: true}
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -131,7 +131,7 @@ func TestFlagReverse(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Reverse: true}
+	flags := &sortgo_config.Config{Reverse: true}
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -149,7 +149,7 @@ func TestFlagUnique(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Unique: true}
+	flags := &sortgo_config.Config{Unique: true}
 	lines = removeDuplicates(lines, flags)
 	sortLines(lines, flags)
 
@@ -171,7 +171,7 @@ func TestFlagMonth(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Month: true}
+	flags := &sortgo_config.Config{Month: true}
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -192,7 +192,7 @@ func TestFlagIgnoreTrailing(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{IgnoreTrailing: true}
+	flags := &sortgo_config.Config{IgnoreTrailing: true}
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -213,7 +213,7 @@ func TestFlagHuman(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Human: true}
+	flags := &sortgo_config.Config{Human: true}
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -234,7 +234,7 @@ func TestNumReverse(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Num: true, Reverse: true}
+	flags := &sortgo_config.Config{Num: true, Reverse: true}
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -253,7 +253,7 @@ func TestKeyNum(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Key: 2, Num: true}
+	flags := &sortgo_config.Config{Key: 2, Num: true}
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -272,7 +272,7 @@ func TestKeyReverse(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Key: 2, Reverse: true}
+	flags := &sortgo_config.Config{Key: 2, Reverse: true}
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -290,7 +290,7 @@ func TestKeyUnique(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Key: 2, Unique: true}
+	flags := &sortgo_config.Config{Key: 2, Unique: true}
 	lines = removeDuplicates(lines, flags)
 	sortLines(lines, flags)
 
@@ -310,7 +310,7 @@ func TestKeyNumReverse(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Key: 2, Num: true, Reverse: true}
+	flags := &sortgo_config.Config{Key: 2, Num: true, Reverse: true}
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -330,7 +330,7 @@ func TestKeyHumanUnique(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Key: 2, Human: true, Unique: true}
+	flags := &sortgo_config.Config{Key: 2, Human: true, Unique: true}
 	lines = removeDuplicates(lines, flags)
 	sortLines(lines, flags)
 
@@ -352,7 +352,7 @@ func TestKeyMonthReverse(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Key: 2, Month: true, Reverse: true}
+	flags := &sortgo_config.Config{Key: 2, Month: true, Reverse: true}
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -371,7 +371,7 @@ func TestKeyIgnoreTrailing(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Key: 2, IgnoreTrailing: true}
+	flags := &sortgo_config.Config{Key: 2, IgnoreTrailing: true}
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -389,7 +389,7 @@ func TestUniqueIgnoreTrailing(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Unique: true, IgnoreTrailing: true}
+	flags := &sortgo_config.Config{Unique: true, IgnoreTrailing: true}
 	lines = removeDuplicates(lines, flags)
 	sortLines(lines, flags)
 
@@ -411,7 +411,7 @@ func TestMonthReverse(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Month: true, Reverse: true}
+	flags := &sortgo_config.Config{Month: true, Reverse: true}
 	sortLines(lines, flags)
 
 	assertEqual(t, lines, expected)
@@ -433,7 +433,7 @@ func TestHumanReverseUnique(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{Human: true, Reverse: true, Unique: true}
+	flags := &sortgo_config.Config{Human: true, Reverse: true, Unique: true}
 	lines = removeDuplicates(lines, flags)
 	sortLines(lines, flags)
 
@@ -451,7 +451,7 @@ func TestLargeSort(t *testing.T) {
 	}
 
 	lines := makeLines(data)
-	flags := &config.Config{
+	flags := &sortgo_config.Config{
 		Num: true,
 	}
 
