@@ -118,7 +118,7 @@ func TestGrepIntegration(t *testing.T) {
 			}
 
 			// Run
-			if err := processInput(&output, reader, matcher, &tt.cfg); err != nil {
+			if err := searchPattern(&output, reader, matcher, &tt.cfg); err != nil {
 				t.Fatalf("failed to scan text: %v", err)
 			}
 

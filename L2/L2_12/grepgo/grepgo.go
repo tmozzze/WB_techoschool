@@ -43,14 +43,14 @@ func Grep() {
 		os.Exit(1)
 	}
 	// Run Check
-	if err := processInput(writer, reader, matcher, cfg); err != nil {
+	if err := searchPattern(writer, reader, matcher, cfg); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 		os.Exit(1)
 	}
 
 }
 
-func processInput(w io.Writer, r io.Reader, matcher Matcher, cfg *grepgo_config.Config) error {
+func searchPattern(w io.Writer, r io.Reader, matcher Matcher, cfg *grepgo_config.Config) error {
 	scanner := bufio.NewScanner(r)
 
 	// Buffer for lines before matching (-B)
