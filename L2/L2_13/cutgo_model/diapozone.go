@@ -53,3 +53,12 @@ func (s *IntDiapozoneValue) Set(value string) error {
 	}
 	return nil
 }
+
+// Len - return len of slice
+func (s *IntDiapozoneValue) Len() int {
+	return len(*s)
+}
+
+func (s *IntDiapozoneValue) GetSlice() []int {
+	return *s
+}

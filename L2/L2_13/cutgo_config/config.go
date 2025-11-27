@@ -37,10 +37,11 @@ func NewConfig() *Config {
 
 func (c *Config) Print() {
 	fmt.Printf(
-		"Config: -f: %v | -d: %q | -s: %v |\n",
+		"Config: -f: %v | -d: %q | -s: %v | file: %v |\n",
 		c.Fields.String(),
 		c.Delimiter,
 		c.Separated,
+		c.FileName,
 	)
 }
 
@@ -52,6 +53,10 @@ func ParseConfig() (*Config, error) {
 	pflag.BoolVarP(&cfg.Separated, "separated", "s", false, "print lines with separator/delimiter (default '\t')")
 
 	pflag.Parse()
+
+	if cfg.Fields.Len() == 0 {
+		return nil, fmt.Errorf("-fields cannot be empty. Example (-f 1,3-5)")
+	}
 
 	args := pflag.Args()
 	if len(args) > 1 {
