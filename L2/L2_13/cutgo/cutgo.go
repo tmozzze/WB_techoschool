@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/tmozzze/WB_techoschool/L2/L2_13/cutgo_config"
 )
@@ -35,13 +36,51 @@ func Cut() {
 	cut(reader, writer, cfg)
 }
 
-func cut(reader io.Reader, writer io.Writer, cfg *cutgo_config.Config) {
+func cut(reader io.Reader, writer io.Writer, cfg *cutgo_config.Config) error {
+	var text string
+
 	sep := cfg.Delimiter
 
 	scanner := bufio.NewScanner(reader)
-	fields := cfg.Fields.GetSlice()
+	// get diapozone indexses
+	diapozoneIdx := cfg.Fields.GetSlice()
 
 	for scanner.Scan() {
-		fmt.Println(fields, sep)
+		text = scanner.Text()
+		// check separator in line
+		// If line HAS NOT separator
+		if !strings.Contains(text, sep) {
+			// and -s getted - Do nothing
+			if cfg.Separated {
+				continue
+			} else {
+				// and -s NOT getted - print full line
+				fmt.Fprintln(writer, text)
+				continue
+			}
+		}
+		// split text on parts by separator
+		fields := strings.Split(text, sep)
+
+		var selectedFields []string // slice for fields in diapozone
+
+		for _, idx := range diapozoneIdx {
+			// diapozone idx start from 1 (slice idx start from 0)
+			formatedIdx := idx - 1
+
+			if formatedIdx >= 0 && formatedIdx < len(fields) {
+				selectedFields = append(selectedFields, fields[formatedIdx])
+			}
+		}
+		// join slice in one line
+		result := strings.Join(selectedFields, sep)
+		fmt.Fprintln(writer, result)
+
 	}
+
+	if err := scanner.Err(); err != nil {
+		return fmt.Errorf("scanner error: %w", err)
+	}
+
+	return nil
 }

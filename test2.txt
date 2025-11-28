@@ -1,2 +1,3 @@
-banana	3
+banana:3
 apple	2
+cherry: 5:6
