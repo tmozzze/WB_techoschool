@@ -18,9 +18,6 @@ func Cut() {
 		os.Exit(1)
 	}
 
-	//TODO: Delete
-	cfg.Print()
-
 	// Init reader
 	reader, cleanup, err := getInputReader(cfg)
 	if err != nil {
@@ -33,10 +30,10 @@ func Cut() {
 	writer := os.Stdout
 
 	// Procces
-	cut(reader, writer, cfg)
+	Cutgo(reader, writer, cfg)
 }
 
-func cut(reader io.Reader, writer io.Writer, cfg *cutgo_config.Config) error {
+func Cutgo(reader io.Reader, writer io.Writer, cfg *cutgo_config.Config) error {
 	var text string
 
 	sep := cfg.Delimiter

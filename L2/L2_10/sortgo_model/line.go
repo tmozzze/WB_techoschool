@@ -2,7 +2,7 @@ package sortgo_model
 
 import "strings"
 
-// Line - represents a single line with raw text and its fields.
+// Line - represents a single line with raw text and its fields
 type Line struct {
 	Raw    string
 	Fields []string
