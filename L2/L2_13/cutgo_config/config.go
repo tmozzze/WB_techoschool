@@ -33,6 +33,7 @@ func (c *Config) Print() {
 	)
 }
 
+// ParseConfig - parsing flags to Config
 func ParseConfig() (*Config, error) {
 	cfg := NewConfig()
 
@@ -42,17 +43,17 @@ func ParseConfig() (*Config, error) {
 
 	pflag.Parse()
 
+	// Check Fields
 	if cfg.Fields.Len() == 0 {
 		return nil, fmt.Errorf("-fields cannot be empty. Example (-f 1,3-5)")
 	}
-
-	fmt.Println(cfg.Fields)
 
 	args := pflag.Args()
 	if len(args) > 1 {
 		return nil, fmt.Errorf("too many arguments")
 	}
 
+	// set filename to cfg
 	if len(args) == 1 {
 		cfg.FileName = args[0]
 	}
