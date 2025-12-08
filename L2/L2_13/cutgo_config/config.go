@@ -7,6 +7,7 @@ import (
 	"github.com/tmozzze/WB_techoschool/L2/L2_13/cutgo_model"
 )
 
+// Config - struct for flags and filename
 type Config struct {
 	Fields    cutgo_model.IntDiapozoneValue // (-f) default len() == 0
 	Delimiter string                        // sep - default '\t' (-d)
@@ -15,14 +16,16 @@ type Config struct {
 	FileName string // default "" - if STDIN
 }
 
+// NewConfig - returns ptr on Config struct with default values
 func NewConfig() *Config {
 	return &Config{
-		Fields:    make(cutgo_model.IntDiapozoneValue, 0),
-		Delimiter: "\t",
-		Separated: false,
+		Fields:    make(cutgo_model.IntDiapozoneValue, 0), // default - [0]int
+		Delimiter: "\t",                                   // default - \t
+		Separated: false,                                  // default - false
 	}
 }
 
+// Print - prints config
 func (c *Config) Print() {
 	fmt.Printf(
 		"Config: -f: %v | -d: %q | -s: %v | file: %v |\n",

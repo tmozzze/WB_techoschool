@@ -10,6 +10,7 @@ import (
 	"github.com/tmozzze/WB_techoschool/L2/L2_13/cutgo_config"
 )
 
+// Cut - init components and starts Cutgo()
 func Cut() {
 	// Init config
 	cfg, err := cutgo_config.ParseConfig()
@@ -24,6 +25,7 @@ func Cut() {
 		fmt.Fprintf(os.Stderr, "Reader error: %v", err)
 		os.Exit(1)
 	}
+	// close file/reader
 	defer cleanup()
 
 	// Init writer
@@ -33,6 +35,7 @@ func Cut() {
 	Cutgo(reader, writer, cfg)
 }
 
+// Cutgo - outputs the result of cut to the writer, taking into account the flags
 func Cutgo(reader io.Reader, writer io.Writer, cfg *cutgo_config.Config) error {
 	var text string
 
@@ -40,9 +43,9 @@ func Cutgo(reader io.Reader, writer io.Writer, cfg *cutgo_config.Config) error {
 
 	scanner := bufio.NewScanner(reader)
 
-	// sorting diapozone indexes
+	// sorting diapozone indices
 	cfg.Fields.SortFields()
-	// get diapozone indexes
+	// get diapozone indices
 	diapozoneIdxes := cfg.Fields.GetSlice()
 
 	for scanner.Scan() {

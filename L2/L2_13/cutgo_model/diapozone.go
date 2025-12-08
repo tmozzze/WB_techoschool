@@ -7,12 +7,15 @@ import (
 	"strings"
 )
 
+// IntDiapozoneValue - slice of integers for pflag
 type IntDiapozoneValue []int
 
+// Type - returns "IntDiapozone"
 func (s *IntDiapozoneValue) Type() string {
 	return "intDiapozone"
 }
 
+// String - returns a string of elements consisting of comma-separated fields
 func (s *IntDiapozoneValue) String() string {
 	var strSlice []string
 	for _, v := range *s {
@@ -21,6 +24,8 @@ func (s *IntDiapozoneValue) String() string {
 	return strings.Join(strSlice, ",")
 }
 
+// Set - returns Error
+// fills a slice of indices from a range
 func (s *IntDiapozoneValue) Set(value string) error {
 	ranges := strings.Split(value, ",")
 	for _, r := range ranges {
@@ -55,12 +60,12 @@ func (s *IntDiapozoneValue) Set(value string) error {
 	return nil
 }
 
-// Len - return len of slice
+// Len - returns len of slice
 func (s *IntDiapozoneValue) Len() int {
 	return len(*s)
 }
 
-// GetSlice - return slice
+// GetSlice - returns slice of fields indexes
 func (s *IntDiapozoneValue) GetSlice() []int {
 	return *s
 }
