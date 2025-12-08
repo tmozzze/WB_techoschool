@@ -46,6 +46,8 @@ func ParseConfig() (*Config, error) {
 		return nil, fmt.Errorf("-fields cannot be empty. Example (-f 1,3-5)")
 	}
 
+	fmt.Println(cfg.Fields)
+
 	args := pflag.Args()
 	if len(args) > 1 {
 		return nil, fmt.Errorf("too many arguments")

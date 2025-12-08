@@ -2,6 +2,7 @@ package cutgo_model
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -59,6 +60,30 @@ func (s *IntDiapozoneValue) Len() int {
 	return len(*s)
 }
 
+// GetSlice - return slice
 func (s *IntDiapozoneValue) GetSlice() []int {
 	return *s
+}
+
+// SortFields - sorting slice of fields if NOT sorted
+func (s *IntDiapozoneValue) SortFields() {
+	sort.Ints(*s)
+
+	s.removeDuplicates()
+}
+
+func (s *IntDiapozoneValue) removeDuplicates() {
+	if len(*s) < 2 {
+		return
+	}
+
+	uniqueIdx := 0
+	for i := 1; i < len(*s); i++ {
+		if (*s)[uniqueIdx] != (*s)[i] {
+			uniqueIdx++
+			(*s)[uniqueIdx] = (*s)[i]
+		}
+	}
+	*s = (*s)[:uniqueIdx+1]
+
 }

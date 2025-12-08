@@ -39,8 +39,11 @@ func Cutgo(reader io.Reader, writer io.Writer, cfg *cutgo_config.Config) error {
 	sep := cfg.Delimiter
 
 	scanner := bufio.NewScanner(reader)
-	// get diapozone indexses
-	diapozoneIdx := cfg.Fields.GetSlice()
+
+	// sorting diapozone indexes
+	cfg.Fields.SortFields()
+	// get diapozone indexes
+	diapozoneIdxes := cfg.Fields.GetSlice()
 
 	for scanner.Scan() {
 		text = scanner.Text()
@@ -61,7 +64,7 @@ func Cutgo(reader io.Reader, writer io.Writer, cfg *cutgo_config.Config) error {
 
 		var selectedFields []string // slice for fields in diapozone
 
-		for _, idx := range diapozoneIdx {
+		for _, idx := range diapozoneIdxes {
 			// diapozone idx start from 1 (slice idx start from 0)
 			formatedIdx := idx - 1
 
